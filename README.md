@@ -2,19 +2,19 @@
 
 ## Repository for Google Hackathon Submission
 
-### **Description**
-AI-Tax-Assistant is an AI-powered tax assistant that helps automate tax filing by leveraging FastAPI, AI-driven chatbots, and OCR-based document processing. This solution aims to reduce human errors, improve efficiency, and simplify tax calculations for users by integrating multiple AI techniques and structured data processing.
+### **Overview**
+AI-Tax-Assistant is designed to simplify tax filing by automating key processes using AI. This tool helps individuals and businesses calculate taxes, get tax-related advice via an AI-powered chatbot, and extract financial data from receipts using OCR technology.
 
-### **Features**
-- **Tax Calculation Engine**: Implements a rule-based system to compute tax based on user-provided income and deductions.
-- **AI Chatbot for Tax Queries**: Uses Natural Language Processing (NLP) to answer tax-related questions.
-- **OCR Document Processing**: Extracts financial data from scanned invoices and receipts.
-- **FastAPI Backend**: Provides a RESTful API for integration and user interaction.
-- **Secure and Scalable**: Implements security measures to ensure data privacy.
+### **Key Features**
+- **Tax Calculation**: Computes tax based on income and deductions using a predefined rule-based system.
+- **AI Chatbot for Tax Queries**: Provides tax-related guidance using NLP.
+- **OCR Document Processing**: Extracts financial details from scanned invoices and receipts.
+- **FastAPI Backend**: A lightweight and efficient REST API for easy integration.
+- **Security & Scalability**: Ensures data privacy and supports multiple users.
 
 ### **Technology Stack**
 - **Backend**: Python, FastAPI
-- **AI/ML**: Transformers (Hugging Face), PyTorch (for chatbot, optional)
+- **AI/ML**: Hugging Face Transformers, PyTorch (optional for chatbot)
 - **OCR**: Pytesseract, Pillow
 - **Data Processing**: Pandas, NumPy
 - **Deployment**: Uvicorn (FastAPI Server), GitHub
@@ -28,7 +28,7 @@ git clone https://github.com/mistyyx/AI-Tax-Assistant.git
 cd AI-Tax-Assistant
 ```
 
-#### **2️⃣ Set Up Virtual Environment (Recommended)**
+#### **2️⃣ Set Up Virtual Environment**
 ```sh
 python3 -m venv .venv
 source .venv/bin/activate  # On Mac/Linux
@@ -44,27 +44,39 @@ pip install -r requirements.txt
 ```sh
 uvicorn code1:app --reload
 ```
-The API will be available at: **http://127.0.0.1:8000/**
+The API will be accessible at: **http://127.0.0.1:8000/**
 
 ---
 
-### **Usage**
-#### **1️⃣ API Endpoints**
+### **How to Use**
+#### **API Endpoints**
 - **Calculate Tax** (`POST /calculate_tax`)
-  - Request Body: `{ "income": 50000, "deductions": 10000 }`
-  - Response: `{ "income": 50000, "deductions": 10000, "tax_due": 8000 }`
+  - Request Body:
+    ```json
+    { "income": 50000, "deductions": 10000 }
+    ```
+  - Response:
+    ```json
+    { "income": 50000, "deductions": 10000, "tax_due": 8000 }
+    ```
 
 - **Chatbot Query** (`POST /chatbot`)
-  - Request: `{ "query": "How can I reduce my tax?" }`
-  - Response: `{ "response": "You can reduce tax by investing in retirement funds." }`
+  - Example Request:
+    ```json
+    { "query": "How can I reduce my tax?" }
+    ```
+  - Example Response:
+    ```json
+    { "response": "You can reduce tax by investing in retirement funds." }
+    ```
 
 - **Receipt Processing** (`POST /process_receipt`)
-  - Upload an image file of a receipt.
-  - Response: Extracted text from the image.
+  - Upload an image of a receipt.
+  - Response: Extracted text from the receipt.
 
 ---
 
-### **File Structure**
+### **Project Structure**
 ```
 📂 AI-Tax-Assistant
  ┣ 📂 .venv            # Virtual environment (optional)
@@ -80,7 +92,7 @@ The API will be available at: **http://127.0.0.1:8000/**
 ---
 
 ### **Dependencies**
-The project requires the following Python packages:
+This project requires:
 ```plaintext
 fastapi
 uvicorn
@@ -92,7 +104,7 @@ pillow
 transformers
 torch  # Required if chatbot AI is enabled
 ```
-Install all dependencies using:
+To install all dependencies, run:
 ```sh
 pip install -r requirements.txt
 ```
@@ -100,9 +112,9 @@ pip install -r requirements.txt
 ---
 
 ### **Limitations**
-- The chatbot requires **PyTorch** or **TensorFlow** to function fully.
-- OCR quality depends on the clarity of scanned documents.
-- Current tax rules are simplified and may not cover all real-world cases.
+- The chatbot requires PyTorch or TensorFlow to work fully.
+- OCR accuracy depends on the quality of scanned documents.
+- The tax computation is simplified and does not cover all tax regulations.
 
 ---
 
@@ -114,7 +126,7 @@ pip install -r requirements.txt
 ---
 
 ### **Contributing**
-If you'd like to contribute to this project:
+Want to contribute? Follow these steps:
 1. Fork the repository.
 2. Create a new branch (`git checkout -b feature-branch`).
 3. Commit your changes (`git commit -m "Added new feature"`).
@@ -123,11 +135,6 @@ If you'd like to contribute to this project:
 
 ---
 
-### **License**
-This project is licensed under the MIT License.
-
----
 
 ### **Contact**
-For any queries, contact the project maintainer at [your-email@example.com].
-
+For questions or suggestions, feel free to reach out at [anusuyasadhukhan4@gmail.com].
