@@ -1,73 +1,141 @@
-import warnings
-warnings.filterwarnings("ignore", message=".*NotOpenSSLWarning.*")
+# AI-Tax-Assistant
 
-from fastapi import FastAPI, UploadFile, File, Form
-from pydantic import BaseModel
-import pandas as pd
-import numpy as np
-import pytesseract
-from PIL import Image
-from transformers import pipeline
-import uvicorn
-import sys
+## Repository for Google Hackathon Submission
 
-# Initialize FastAPI app
-app = FastAPI()
+### **Overview**
+AI-Tax-Assistant is designed to simplify tax filing by automating key processes using AI. This tool helps individuals and businesses calculate taxes, get tax-related advice via an AI-powered chatbot, and extract financial data from receipts using OCR technology.
 
-# Define tax computation with updated slabs based on ClearTax
-class TaxComputation:
-    def __init__(self, income: float, deductions: float = 0, regime: str = "new"):
-        self.income = income
-        self.deductions = deductions + 75000  # Standard deduction of ₹75,000
-        self.regime = regime
+### **Key Features**
+- **Tax Calculation**: Computes tax based on income and deductions using a predefined rule-based system, including the standard deduction of ₹75,000.
+- **AI Chatbot for Tax Queries**: Provides tax-related guidance using NLP.
+- **OCR Document Processing**: Extracts financial details from scanned invoices and receipts.
+- **FastAPI Backend**: A lightweight and efficient REST API for easy integration.
+- **Security & Scalability**: Ensures data privacy and supports multiple users.
 
-    def calculate_tax(self):
-        taxable_income = max(0, self.income - self.deductions)
-        
-        if self.regime == "new":
-            if taxable_income <= 300000:
-                return 0
-            elif taxable_income <= 700000:
-                return (taxable_income - 300000) * 0.05
-            elif taxable_income <= 1000000:
-                return (400000 * 0.05) + (taxable_income - 700000) * 0.1
-            elif taxable_income <= 1200000:
-                return (400000 * 0.05) + (300000 * 0.1) + (taxable_income - 1000000) * 0.15
-            elif taxable_income <= 1500000:
-                return (400000 * 0.05) + (300000 * 0.1) + (200000 * 0.15) + (taxable_income - 1200000) * 0.2
-            else:
-                return (400000 * 0.05) + (300000 * 0.1) + (200000 * 0.15) + (300000 * 0.2) + (taxable_income - 1500000) * 0.3
-        
-        else:  # Old tax regime
-            if taxable_income <= 250000:
-                return 0
-            elif taxable_income <= 500000:
-                return (taxable_income - 250000) * 0.05
-            elif taxable_income <= 1000000:
-                return (250000 * 0.05) + (taxable_income - 500000) * 0.2
-            else:
-                return (250000 * 0.05) + (500000 * 0.2) + (taxable_income - 1000000) * 0.3
+### **Technology Stack**
+- **Backend**: Python, FastAPI
+- **AI/ML**: Hugging Face Transformers, PyTorch (optional for chatbot)
+- **OCR**: Pytesseract, Pillow
+- **Data Processing**: Pandas, NumPy
+- **Deployment**: Uvicorn (FastAPI Server), GitHub
 
-# Define API Models
-class TaxInput(BaseModel):
-    income: float
-    deductions: float = 0.0
-    regime: str = "new"  # User can choose "new" or "old" tax regime
+---
 
-@app.post("/calculate_tax")
-def get_tax(input_data: TaxInput):
-    tax_comp = TaxComputation(input_data.income, input_data.deductions, input_data.regime)
-    tax_amount = tax_comp.calculate_tax()
-    return {"income": input_data.income, "deductions": input_data.deductions, "tax_regime": input_data.regime, "tax_due": tax_amount}
+### **Getting Started**
+#### **1️⃣ Clone the Repository**
+```sh
+git clone https://github.com/mistyyx/AI-Tax-Assistant.git
+cd AI-Tax-Assistant
+```
 
-@app.post("/chatbot")
-def chatbot_response(query: str = Form(...)):
-    return {"response": "Chatbot functionality not implemented yet."}
+#### **2️⃣ Set Up Virtual Environment**
+```sh
+python3 -m venv .venv
+source .venv/bin/activate  # On Mac/Linux
+.venv\Scripts\activate     # On Windows
+```
 
-@app.post("/process_receipt")
-def process_receipt(file: UploadFile = File(...)):
-    file.file.seek(0)
-    return {"extracted_text": "OCR functionality not implemented yet."}
+#### **3️⃣ Install Dependencies**
+```sh
+pip install -r requirements.txt
+```
 
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+#### **4️⃣ Run the Application**
+```sh
+uvicorn code1:app --reload
+```
+The API will be accessible at: **http://127.0.0.1:8000/**
+
+---
+
+### **How to Use**
+#### **API Endpoints**
+- **Calculate Tax** (`POST /calculate_tax`)
+  - Request Body:
+    ```json
+    { "income": 1000000, "deductions": 50000, "regime": "new" }
+    ```
+  - Response:
+    ```json
+    { "income": 1000000, "deductions": 50000, "tax_regime": "new", "tax_due": 75000 }
+    ```
+
+- **Chatbot Query** (`POST /chatbot`)
+  - Example Request:
+    ```json
+    { "query": "How can I reduce my tax?" }
+    ```
+  - Example Response:
+    ```json
+    { "response": "You can reduce tax by investing in retirement funds." }
+    ```
+
+- **Receipt Processing** (`POST /process_receipt`)
+  - Upload an image of a receipt.
+  - Response: Extracted text from the receipt.
+
+---
+
+### **Project Structure**
+```
+📂 AI-Tax-Assistant
+ ┣ 📂 .venv            # Virtual environment (optional)
+ ┣ 📂 src              # Source code
+ ┃ ┣ 📜 code1.py       # Main application file
+ ┣ 📂 docs             # Documentation files
+ ┣ 📂 data             # Sample data and test files
+ ┣ 📂 tests            # Unit tests
+ ┣ 📜 requirements.txt # Dependencies
+ ┣ 📜 README.md        # Project documentation
+```
+
+---
+
+### **Dependencies**
+This project requires:
+```plaintext
+fastapi
+uvicorn
+pydantic
+pandas
+numpy
+pytesseract
+pillow
+transformers
+torch  # Required if chatbot AI is enabled
+```
+To install all dependencies, run:
+```sh
+pip install -r requirements.txt
+```
+
+---
+
+### **Limitations**
+- The chatbot requires PyTorch or TensorFlow to work fully.
+- OCR accuracy depends on the quality of scanned documents.
+- The tax computation is simplified and does not cover all tax regulations.
+
+---
+
+### **References**
+- [FastAPI Documentation](https://fastapi.tiangolo.com/)
+- [Transformers by Hugging Face](https://huggingface.co/docs/transformers/index)
+- [Pytesseract OCR](https://pypi.org/project/pytesseract/)
+- [ClearTax Income Tax Slabs](https://cleartax.in/s/income-tax-slabs)
+
+---
+
+### **Contributing**
+Want to contribute? Follow these steps:
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Commit your changes (`git commit -m "Added new feature"`).
+4. Push to your branch (`git push origin feature-branch`).
+5. Submit a pull request.
+
+---
+
+### **Contact**
+For questions or suggestions, feel free to reach out at [anusuyasadhukhan4@gmail.com].
+
